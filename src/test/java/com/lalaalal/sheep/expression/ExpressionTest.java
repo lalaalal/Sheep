@@ -10,15 +10,7 @@ class ExpressionTest {
 
     @Test
     void parseExpression() {
-        Operand operand = Expression.parseExpression("1+2*3+MULTIPLE(ADD(1,1),2)+SUM(1,2,3,4)");
+        Operand operand = Expression.parseExpression("1+2*3+MULTIPLE(ADD(1*1,0+1),1+1)+SUM(1,2,3,4)");
         System.out.println(operand.calculate());
-    }
-
-    @Test
-    void parseComponent() {
-        Component component = Expression.parseToOperand("ADD(ADD(1,1),1)");
-
-        System.out.println(component.asOperand().calculate());
-
     }
 }

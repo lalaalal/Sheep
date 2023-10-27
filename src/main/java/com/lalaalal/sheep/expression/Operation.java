@@ -45,14 +45,14 @@ public class Operation extends Operand {
         int commaIndex = findNextCommaIndex(expression, 0);
         if (commaIndex == expression.length()) {
             Operand[] parameters = new Operand[depth + 1];
-            parameters[depth] = Expression.parseToOperand(expression);
+            parameters[depth] = Expression.parseExpression(expression);
 
             return parameters;
         }
 
         Operand[] parameters = parseParameters(expression.substring(commaIndex + 1), depth + 1);
         String componentString = expression.substring(0, commaIndex);
-        parameters[depth] = Expression.parseToOperand(componentString);
+        parameters[depth] = Expression.parseExpression(componentString);
 
         return parameters;
     }

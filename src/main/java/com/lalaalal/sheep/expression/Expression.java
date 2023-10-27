@@ -96,7 +96,7 @@ public class Expression {
         }
     }
 
-    public static Operand parseToOperand(String expression) {
+    private static Operand parseToOperand(String expression) {
         for (OperandParser parser : parsers) {
             if (parser.check(expression))
                 return parser.parse(expression);
@@ -138,9 +138,14 @@ public class Expression {
     }
 
     private static int findNextOperatorIndex(String expression, int current) {
+        int depth = 0;
         for (int index = current + 1; index < expression.length(); index++) {
             char c = expression.charAt(index);
-            if (Operator.isOperator(c))
+            if (isOpenBracket(c))
+                depth += 1;
+            if (isCloseBracket(c))
+                depth -= 1;
+            if (depth == 0 && Operator.isOperator(c))
                 return index;
         }
         return expression.length();
