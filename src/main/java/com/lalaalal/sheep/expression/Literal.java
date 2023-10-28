@@ -48,4 +48,11 @@ public class Literal extends Operand {
     public double toDouble() {
         return Double.parseDouble(text);
     }
+
+    public String toString(int maxLength) {
+        String result = toString();
+        if (result.length() > 4)
+            return result.substring(0, maxLength);
+        return result;
+    }
 }

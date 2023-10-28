@@ -5,17 +5,19 @@ import com.lalaalal.sheep.expression.Literal;
 import com.lalaalal.sheep.expression.Operand;
 
 public class Cell {
-    private Position position;
+    public static final Cell EMPTY = new Cell("");
+
     private String literal;
     private Operand rootOperand;
 
-    public Cell(Position position, String text) {
-        this.position = position;
+    public Cell(String text) {
         this.literal = text;
     }
 
     public boolean isExpression() {
-        return literal.charAt(0) == '=';
+        if (!literal.isEmpty())
+            return literal.charAt(0) == '=';
+        return false;
     }
 
     public String getLiteral() {
@@ -36,16 +38,8 @@ public class Cell {
             rootOperand = Expression.parseExpression(literal);
     }
 
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
     @Override
     public String toString() {
-        return super.toString();
+        return literal;
     }
 }

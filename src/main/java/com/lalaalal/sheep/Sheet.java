@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Sheet {
     public static final int DEFAULT_ROW_HEIGHT = 1;
-    public static final int DEFAULT_COLUMN_WIDTH = 4;
+    public static final int DEFAULT_COLUMN_WIDTH = 8;
 
     private final HashMap<Position, Cell> cells = new HashMap<>();
 
@@ -12,7 +12,9 @@ public class Sheet {
     private final HashMap<Integer, Integer> columnWidths = new HashMap<>();
 
     public Cell getCell(Position position) {
-        return cells.get(position);
+        if (cells.containsKey(position))
+            return cells.get(position);
+        return Cell.EMPTY;
     }
 
     public final void setText(String positionString, String text) {
@@ -20,7 +22,7 @@ public class Sheet {
     }
 
     public void setText(Position position, String text) {
-        cells.put(position, new Cell(position, text));
+        cells.put(position, new Cell(text));
     }
 
     public int getRowHeight(int row) {
