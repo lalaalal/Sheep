@@ -11,6 +11,18 @@ public class Sheet {
     private final HashMap<Integer, Integer> rowHeights = new HashMap<>();
     private final HashMap<Integer, Integer> columnWidths = new HashMap<>();
 
+    public Cell getCell(Position position) {
+        return cells.get(position);
+    }
+
+    public final void setText(String positionString, String text) {
+        setText(Position.at(positionString), text);
+    }
+
+    public void setText(Position position, String text) {
+        cells.put(position, new Cell(position, text));
+    }
+
     public int getRowHeight(int row) {
         return rowHeights.getOrDefault(row, DEFAULT_ROW_HEIGHT);
     }

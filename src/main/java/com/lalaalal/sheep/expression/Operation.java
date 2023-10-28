@@ -1,5 +1,6 @@
 package com.lalaalal.sheep.expression;
 
+import com.lalaalal.sheep.Sheet;
 import com.lalaalal.sheep.function.Function;
 import com.lalaalal.sheep.function.Functions;
 
@@ -78,7 +79,7 @@ public class Operation extends Operand {
     }
 
     @Override
-    public Literal calculate() {
-        return function.calculate(parameters);
+    public Literal calculate(Sheet sheet) {
+        return function.calculate(sheet, parameters);
     }
 }

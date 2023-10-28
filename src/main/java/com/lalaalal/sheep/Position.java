@@ -1,5 +1,7 @@
 package com.lalaalal.sheep;
 
+import com.lalaalal.sheep.expression.Expression;
+
 /**
  * An immutable class storing position of cell.
  *
@@ -35,7 +37,14 @@ public class Position {
     }
 
     public static Position at(String position) {
-        throw new UnsupportedOperationException();
+        int firstNumberIndex = Expression.findNextMatchingCharacterIndex(position, 0, Expression::isNumber);
+        String columnString = position.substring(0, firstNumberIndex);
+        String rowString = position.substring(firstNumberIndex);
+
+        int column = columnToInt(columnString);
+        int row = Integer.parseInt(rowString) - 1;
+
+        return at(row, column);
     }
 
     public static Position at(int row, int column) {
@@ -45,7 +54,7 @@ public class Position {
     public Position(int row, int column) {
         this.row = row;
         this.column = column;
-        this.rowText = String.valueOf(row);
+        this.rowText = String.valueOf(row + 1);
         this.columnText = parseColumn(column);
     }
 

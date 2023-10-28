@@ -1,5 +1,7 @@
 package com.lalaalal.sheep.function;
 
+import com.lalaalal.sheep.expression.CellRange;
+import com.lalaalal.sheep.expression.CellReference;
 import com.lalaalal.sheep.expression.Literal;
 import com.lalaalal.sheep.expression.Operand;
 
@@ -22,19 +24,23 @@ public class Functions {
         register("MULTIPLE", createSimpleFunction((a, b) -> a * b));
         register("DIVIDE", createSimpleFunction((a, b) -> a / b));
 
-        register("SUM", args -> {
+        register("SUM", (sheet, operands) -> {
             double sum = 0;
-            for (Operand arg : args)
-                sum += arg.calculate().toDouble();
-
+            for (Operand operand : operands) {
+                if (operand instanceof CellRange range) {
+                    for (CellReference cellReference : range)
+                        sum += cellReference.calculate(sheet).toDouble();
+                } else
+                    sum += operand.calculate(sheet).toDouble();
+            }
             return new Literal(sum);
         });
     }
 
     private static Function createSimpleFunction(SimpleFunction simpleFunction) {
-        return components -> {
-            double a = components[0].asOperand().calculate().toDouble();
-            double b = components[1].asOperand().calculate().toDouble();
+        return (sheet, operands) -> {
+            double a = operands[0].calculate(sheet).toDouble();
+            double b = operands[1].calculate(sheet).toDouble();
             return new Literal(simpleFunction.calculate(a, b));
         };
     }

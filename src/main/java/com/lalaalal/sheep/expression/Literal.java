@@ -1,5 +1,7 @@
 package com.lalaalal.sheep.expression;
 
+import com.lalaalal.sheep.Sheet;
+
 public class Literal extends Operand {
     public static boolean isLiteral(String expression) {
         if (expression.charAt(0) == '\"' && expression.charAt(expression.length() - 1) == '\"')
@@ -34,7 +36,7 @@ public class Literal extends Operand {
     }
 
     @Override
-    public Literal calculate() {
+    public Literal calculate(Sheet sheet) {
         return this;
     }
 

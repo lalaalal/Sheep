@@ -17,6 +17,8 @@ public class Expression {
     public static void initialize() {
         addParser(Literal::isLiteral, Literal::parseLiteral);
         addParser(Operation::isFunction, Operation::parseFunction);
+        addParser(CellReference::isCellReference, CellReference::parseCellReference);
+        addParser(CellRange::isCellRange, CellRange::parseCellRange);
     }
 
     public static Operand parseExpression(String expression) {
@@ -127,16 +129,6 @@ public class Expression {
         return openBracketIndex;
     }
 
-    public static int findFirstCharacterIndex(String expression, char searchingCharacter, int from) {
-        for (int index = from; index < expression.length(); index++) {
-            char c = expression.charAt(index);
-            if (c == searchingCharacter)
-                return index;
-        }
-
-        return expression.length();
-    }
-
     private static int findNextOperatorIndex(String expression, int current) {
         int depth = 0;
         for (int index = current + 1; index < expression.length(); index++) {
@@ -148,6 +140,24 @@ public class Expression {
             if (depth == 0 && Operator.isOperator(c))
                 return index;
         }
+        return expression.length();
+    }
+
+    public static boolean isAlphabet(char c) {
+        return 'A' <= c && c <= 'Z';
+    }
+
+    public static boolean isNumber(char c) {
+        return '0' <= c && c <= '9';
+    }
+
+    public static int findNextMatchingCharacterIndex(String expression, int from, Function<Character, Boolean> checker) {
+        for (int index = from; index < expression.length(); index++) {
+            char c = expression.charAt(index);
+            if (checker.apply(c))
+                return index;
+        }
+
         return expression.length();
     }
 }

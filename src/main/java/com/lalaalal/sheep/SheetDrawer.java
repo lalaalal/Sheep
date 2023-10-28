@@ -1,5 +1,7 @@
 package com.lalaalal.sheep;
 
+import com.lalaalal.sheep.expression.CellRange;
+
 import java.io.OutputStream;
 
 public class SheetDrawer {
@@ -15,7 +17,7 @@ public class SheetDrawer {
         this.sheet = sheet;
     }
 
-    public void draw(OutputStream outputStream, Range range) {
+    public void draw(OutputStream outputStream, CellRange cellRange) {
 
     }
 }
