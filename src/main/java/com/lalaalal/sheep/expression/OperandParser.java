@@ -1,21 +1,31 @@
 package com.lalaalal.sheep.expression;
 
-import java.util.function.Function;
+import com.lalaalal.sheep.exception.ExpressionError;
 
 public class OperandParser {
-    private final Function<String, Boolean> checker;
-    private final Function<String, Operand> parser;
+    private final Checker checker;
+    private final Parser parser;
 
-    public OperandParser(Function<String, Boolean> checker, Function<String, Operand> parser) {
+    public OperandParser(Checker checker, Parser parser) {
         this.checker = checker;
         this.parser = parser;
     }
 
-    public boolean check(String expression) {
-        return checker.apply(expression);
+    public boolean check(String expression) throws ExpressionError {
+        return checker.check(expression);
     }
 
-    public Operand parse(String expression) {
-        return parser.apply(expression);
+    public Operand parse(String expression) throws ExpressionError {
+        return parser.parse(expression);
+    }
+
+    @FunctionalInterface
+    public interface Checker {
+        boolean check(String expression) throws ExpressionError;
+    }
+
+    @FunctionalInterface
+    public interface Parser {
+        Operand parse(String expression) throws ExpressionError;
     }
 }

@@ -1,6 +1,7 @@
 package com.lalaalal.sheep.expression;
 
-import com.lalaalal.sheep.Sheet;
+import com.lalaalal.sheep.exception.NumberFormatError;
+import com.lalaalal.sheep.sheet.Sheet;
 
 public class Literal extends Operand {
     public static boolean isLiteral(String expression) {
@@ -26,13 +27,21 @@ public class Literal extends Operand {
     }
 
     private final String text;
+    private final String detail;
 
     public Literal(String text) {
         this.text = text;
+        this.detail = "Text";
+    }
+
+    public Literal(String text, String detail) {
+        this.text = text;
+        this.detail = detail;
     }
 
     public Literal(double number) {
         this.text = String.valueOf(number);
+        this.detail = "Number";
     }
 
     @Override
@@ -46,7 +55,15 @@ public class Literal extends Operand {
     }
 
     public double toDouble() {
-        return Double.parseDouble(text);
+        try {
+            return Double.parseDouble(text);
+        } catch (NumberFormatException exception) {
+            throw new NumberFormatError(text);
+        }
+    }
+
+    public String getDetail() {
+        return detail;
     }
 
     public String toString(int maxLength) {

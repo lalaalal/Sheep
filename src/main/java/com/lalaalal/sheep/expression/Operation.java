@@ -1,14 +1,17 @@
 package com.lalaalal.sheep.expression;
 
-import com.lalaalal.sheep.Sheet;
+import com.lalaalal.sheep.exception.CalculationError;
+import com.lalaalal.sheep.exception.ExpressionError;
+import com.lalaalal.sheep.exception.NoSuchFunctionError;
 import com.lalaalal.sheep.function.Function;
 import com.lalaalal.sheep.function.Functions;
+import com.lalaalal.sheep.sheet.Sheet;
 
 public class Operation extends Operand {
     private final Function function;
     private final Operand[] parameters;
 
-    public static boolean isFunction(String expression) {
+    public static boolean isFunction(String expression) throws ExpressionError {
         int firstBracketIndex = Expression.findFirstBracketIndex(expression);
         if (firstBracketIndex == expression.length())
             return false;
@@ -25,24 +28,26 @@ public class Operation extends Operand {
         return ('A' <= c && c <= 'Z') || c == '_';
     }
 
-    public static Operation parseFunction(String expression) {
+    public static Operation parseFunction(String expression) throws ExpressionError {
         int firstBracket = Expression.findFirstBracketIndex(expression);
         String name = expression.substring(0, firstBracket);
         String parametersString = expression.substring(firstBracket + 1, expression.length() - 1);
 
         Function function = Functions.get(name);
+        if (function == null)
+            throw new NoSuchFunctionError(expression, name);
         Operand[] parameters = parseParameters(parametersString);
 
         return new Operation(function, parameters);
     }
 
-    private static Operand[] parseParameters(String expression) {
+    private static Operand[] parseParameters(String expression) throws ExpressionError {
         if (expression.isEmpty())
             return new Operand[0];
         return parseParameters(expression, 0);
     }
 
-    private static Operand[] parseParameters(String expression, int depth) {
+    private static Operand[] parseParameters(String expression, int depth) throws ExpressionError {
         int commaIndex = findNextCommaIndex(expression, 0);
         if (commaIndex == expression.length()) {
             Operand[] parameters = new Operand[depth + 1];
@@ -79,7 +84,7 @@ public class Operation extends Operand {
     }
 
     @Override
-    public Literal calculate(Sheet sheet) {
+    public Literal calculate(Sheet sheet) throws CalculationError {
         return function.calculate(sheet, parameters);
     }
 }

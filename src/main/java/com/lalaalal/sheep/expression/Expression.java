@@ -1,5 +1,8 @@
 package com.lalaalal.sheep.expression;
 
+import com.lalaalal.sheep.exception.BracketError;
+import com.lalaalal.sheep.exception.ExpressionError;
+import com.lalaalal.sheep.exception.NoSuchOperandError;
 import com.lalaalal.sheep.util.BinaryTree;
 
 import java.util.ArrayList;
@@ -10,7 +13,7 @@ import java.util.function.Function;
 public class Expression {
     private static final ArrayList<OperandParser> parsers = new ArrayList<>();
 
-    public static void addParser(Function<String, Boolean> checker, Function<String, Operand> parser) {
+    public static void addParser(OperandParser.Checker checker, OperandParser.Parser parser) {
         parsers.add(new OperandParser(checker, parser));
     }
 
@@ -21,7 +24,7 @@ public class Expression {
         addParser(CellRange::isCellRange, CellRange::parseCellRange);
     }
 
-    public static Operand parseExpression(String expression) {
+    public static Operand parseExpression(String expression) throws ExpressionError {
         int firstOperatorIndex = findNextOperatorIndex(expression, 0);
         Component firstComponent = parseNextComponent(expression, 0);
         BinaryTree<Component> tree = new BinaryTree<>(firstComponent);
@@ -33,7 +36,7 @@ public class Expression {
         return getOperandFromQueue(queue);
     }
 
-    private static void parseExpression(BinaryTree<Component> tree, String expression, int current) {
+    private static void parseExpression(BinaryTree<Component> tree, String expression, int current) throws ExpressionError {
         Operator previousOperator = null;
 
         for (int index = current; index < expression.length(); index++) {
@@ -62,14 +65,14 @@ public class Expression {
         return component.asOperand(arguments);
     }
 
-    private static Component parseNextComponent(String expression, int current) {
+    private static Component parseNextComponent(String expression, int current) throws ExpressionError {
         char c = expression.charAt(current);
         if (isOpenBracket(c)) {
             int closeBracketIndex = findPairBracketIndex(expression, current);
             return parseExpression(expression.substring(current + 1, closeBracketIndex));
         } else {
             int nextOperatorIndex = findNextOperatorIndex(expression, current);
-            return parseToOperand(expression.substring(current, nextOperatorIndex));
+            return parseToOperand(expression, current, expression.substring(current, nextOperatorIndex));
         }
     }
 
@@ -98,13 +101,13 @@ public class Expression {
         }
     }
 
-    private static Operand parseToOperand(String expression) {
+    private static Operand parseToOperand(String originalExpression, int current, String expression) throws ExpressionError {
         for (OperandParser parser : parsers) {
             if (parser.check(expression))
                 return parser.parse(expression);
         }
 
-        throw new IllegalArgumentException();
+        throw new NoSuchOperandError(originalExpression, current, expression);
     }
 
     public static int findFirstBracketIndex(String expression) {
@@ -117,7 +120,7 @@ public class Expression {
         return expression.length();
     }
 
-    public static int findPairBracketIndex(String expression, int openBracketIndex) {
+    public static int findPairBracketIndex(String expression, int openBracketIndex) throws BracketError {
         for (int index = openBracketIndex + 1; index < expression.length(); index++) {
             char c = expression.charAt(index);
             if (isCloseBracket(c))
@@ -126,7 +129,7 @@ public class Expression {
                 index = findPairBracketIndex(expression, index);
         }
 
-        return openBracketIndex;
+        throw new BracketError(expression, openBracketIndex);
     }
 
     private static int findNextOperatorIndex(String expression, int current) {

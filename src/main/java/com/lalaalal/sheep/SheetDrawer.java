@@ -2,6 +2,9 @@ package com.lalaalal.sheep;
 
 import com.lalaalal.sheep.expression.CellRange;
 import com.lalaalal.sheep.expression.Literal;
+import com.lalaalal.sheep.sheet.Cell;
+import com.lalaalal.sheep.sheet.Position;
+import com.lalaalal.sheep.sheet.Sheet;
 
 import java.io.PrintStream;
 
@@ -97,5 +100,15 @@ public class SheetDrawer {
             printStream.print(cornerLetter);
         }
         printStream.println();
+    }
+
+    public void printDetail(PrintStream printStream, Sheet sheet, String position) {
+        Cell cell = sheet.getCell(Position.at(position));
+        printStream.println(position + ": text: " + cell.getText());
+        if (cell.isExpression()) {
+            Literal literal = cell.calculate(sheet);
+            printStream.println(position + ": result: " + literal);
+            printStream.println(position + ": detail: " + literal.getDetail());
+        }
     }
 }

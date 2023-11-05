@@ -19,10 +19,10 @@ public class Functions {
     }
 
     public static void initialize() {
-        register("ADD", createSimpleFunction(Double::sum));
-        register("SUBTRACT", createSimpleFunction((a, b) -> a - b));
-        register("MULTIPLE", createSimpleFunction((a, b) -> a * b));
-        register("DIVIDE", createSimpleFunction((a, b) -> a / b));
+        register("ADD", new OperationFunction(Double::sum));
+        register("SUBTRACT", new OperationFunction((a, b) -> a - b));
+        register("MULTIPLE", new OperationFunction((a, b) -> a * b));
+        register("DIVIDE", new OperationFunction((a, b) -> a / b));
 
         register("SUM", (sheet, operands) -> {
             double sum = 0;
@@ -35,17 +35,5 @@ public class Functions {
             }
             return new Literal(sum);
         });
-    }
-
-    private static Function createSimpleFunction(SimpleFunction simpleFunction) {
-        return (sheet, operands) -> {
-            double a = operands[0].calculate(sheet).toDouble();
-            double b = operands[1].calculate(sheet).toDouble();
-            return new Literal(simpleFunction.calculate(a, b));
-        };
-    }
-
-    private interface SimpleFunction {
-        double calculate(double a, double b);
     }
 }
