@@ -1,9 +1,7 @@
 package com.lalaalal.sheep.function;
 
-import com.lalaalal.sheep.expression.CellRange;
-import com.lalaalal.sheep.expression.CellReference;
-import com.lalaalal.sheep.expression.Literal;
-import com.lalaalal.sheep.expression.Operand;
+import com.lalaalal.sheep.expression.*;
+import com.lalaalal.sheep.sheet.Sheet;
 
 import java.util.HashMap;
 
@@ -18,15 +16,19 @@ public class Functions {
         return registry.get(name);
     }
 
+    public static double calculate(String name, Sheet sheet, Operand[] parameters) {
+        return get(name).calculate(sheet, parameters).toDouble();
+    }
+
     public static void initialize() {
         register("ADD", new OperationFunction(Double::sum));
         register("SUBTRACT", new OperationFunction((a, b) -> a - b));
         register("MULTIPLE", new OperationFunction((a, b) -> a * b));
         register("DIVIDE", new OperationFunction((a, b) -> a / b));
 
-        register("SUM", (sheet, operands) -> {
+        register("SUM", (sheet, parameters) -> {
             double sum = 0;
-            for (Operand operand : operands) {
+            for (Operand operand : parameters) {
                 if (operand instanceof CellRange range) {
                     for (CellReference cellReference : range)
                         sum += cellReference.calculate(sheet).toDouble();
@@ -34,6 +36,10 @@ public class Functions {
                     sum += operand.calculate(sheet).toDouble();
             }
             return new Literal(sum);
+        });
+        register("AVERAGE", (sheet, parameters) -> {
+            double sum = calculate("SUM", sheet, parameters);
+            return new Literal(sum / Operation.getActualParameterNumber(parameters));
         });
     }
 }

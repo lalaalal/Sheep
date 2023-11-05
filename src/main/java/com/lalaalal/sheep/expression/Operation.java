@@ -47,6 +47,18 @@ public class Operation extends Operand {
         return parseParameters(expression, 0);
     }
 
+    public static int getActualParameterNumber(Operand[] parameters) {
+        int parameterNumber = 0;
+        for (Operand parameter : parameters) {
+            if (parameter instanceof CellRange cellRange)
+                parameterNumber += cellRange.getNumberOfCells();
+            else
+                parameterNumber += 1;
+        }
+
+        return parameterNumber;
+    }
+
     private static Operand[] parseParameters(String expression, int depth) throws ExpressionError {
         int commaIndex = findNextCommaIndex(expression, 0);
         if (commaIndex == expression.length()) {

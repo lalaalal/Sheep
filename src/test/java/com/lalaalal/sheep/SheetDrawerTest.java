@@ -14,15 +14,15 @@ class SheetDrawerTest {
     @Test
     void draw() {
         Sheet sheet = new Sheet();
-        sheet.setText("A1", "1");
-        sheet.setText("A2", "2");
-        sheet.setText("A3", "3");
-        sheet.setText("A4", "=A+A3");
-        sheet.setText("A5", "=SUM(A1:A4)");
+        sheet.setText("BA11", "1");
+        sheet.setText("BA12", "2");
+        sheet.setText("BA13", "3");
+        sheet.setText("BA14", "=BA11+BA13");
+        sheet.setText("BA15", "=AVERAGE(BA11:BA14)");
 
         SheetDrawer sheetDrawer = new SheetDrawer();
-        sheetDrawer.draw(System.out, sheet, CellRange.parseCellRange("A1:C5"));
-        sheetDrawer.printDetail(System.out, sheet, "A5");
+        sheetDrawer.draw(System.out, sheet, CellRange.parseCellRange("BA11:BC15"));
+        sheetDrawer.printDetail(System.out, sheet, "BA15");
 
     }
 }

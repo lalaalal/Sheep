@@ -56,6 +56,8 @@ public class Literal extends Operand {
 
     public double toDouble() {
         try {
+            if (text.isEmpty())
+                return 0;
             return Double.parseDouble(text);
         } catch (NumberFormatException exception) {
             throw new NumberFormatError(text);

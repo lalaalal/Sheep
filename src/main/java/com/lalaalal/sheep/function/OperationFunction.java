@@ -13,9 +13,9 @@ public class OperationFunction implements Function {
     }
 
     @Override
-    public Literal calculate(Sheet sheet, Operand... args) throws CalculationError {
-        double a = args[0].calculate(sheet).toDouble();
-        double b = args[1].calculate(sheet).toDouble();
+    public Literal calculate(Sheet sheet, Operand... parameters) throws CalculationError {
+        double a = parameters[0].calculate(sheet).toDouble();
+        double b = parameters[1].calculate(sheet).toDouble();
 
         return new Literal(calculation.calculate(a, b));
     }

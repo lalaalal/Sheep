@@ -7,5 +7,5 @@ import com.lalaalal.sheep.sheet.Sheet;
 
 @FunctionalInterface
 public interface Function {
-    Literal calculate(Sheet sheet, Operand... args) throws CalculationError;
+    Literal calculate(Sheet sheet, Operand... parameters) throws CalculationError;
 }

@@ -49,6 +49,10 @@ public class CellRange extends Operand implements Iterable<CellReference> {
         return to.getRow();
     }
 
+    public int getNumberOfCells() {
+        return (getMaximumColumn() - getMinimumColumn() + 1) * (getMaximumRow() - getMinimumRow() + 1);
+    }
+
     @Override
     public Iterator<CellReference> iterator() {
         return new RangeIterator();
