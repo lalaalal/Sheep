@@ -1,7 +1,7 @@
 package com.lalaalal.sheep.expression;
 
 import com.lalaalal.sheep.exception.CalculationError;
-import com.lalaalal.sheep.sheet.Sheet;
+import com.lalaalal.sheep.sheet.SheetReader;
 
 public abstract class Operand implements Component {
     @Override
@@ -14,5 +14,5 @@ public abstract class Operand implements Component {
         return 0;
     }
 
-    public abstract Literal calculate(Sheet sheet) throws CalculationError;
+    public abstract Literal calculate(SheetReader sheet) throws CalculationError;
 }

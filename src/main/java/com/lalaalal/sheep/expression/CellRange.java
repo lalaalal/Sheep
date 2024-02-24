@@ -1,7 +1,7 @@
 package com.lalaalal.sheep.expression;
 
 import com.lalaalal.sheep.sheet.Position;
-import com.lalaalal.sheep.sheet.Sheet;
+import com.lalaalal.sheep.sheet.SheetReader;
 
 import java.util.Iterator;
 
@@ -59,7 +59,7 @@ public class CellRange extends Operand implements Iterable<CellReference> {
     }
 
     @Override
-    public Literal calculate(Sheet sheet) {
+    public Literal calculate(SheetReader sheet) {
         return null;
     }
 

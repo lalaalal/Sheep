@@ -1,7 +1,7 @@
 package com.lalaalal.sheep.expression;
 
 import com.lalaalal.sheep.exception.NumberFormatError;
-import com.lalaalal.sheep.sheet.Sheet;
+import com.lalaalal.sheep.sheet.SheetReader;
 
 public class Literal extends Operand {
     public static boolean isLiteral(String expression) {
@@ -45,7 +45,7 @@ public class Literal extends Operand {
     }
 
     @Override
-    public Literal calculate(Sheet sheet) {
+    public Literal calculate(SheetReader sheet) {
         return this;
     }
 

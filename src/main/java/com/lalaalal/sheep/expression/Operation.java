@@ -5,7 +5,7 @@ import com.lalaalal.sheep.exception.ExpressionError;
 import com.lalaalal.sheep.exception.NoSuchFunctionError;
 import com.lalaalal.sheep.function.Function;
 import com.lalaalal.sheep.function.Functions;
-import com.lalaalal.sheep.sheet.Sheet;
+import com.lalaalal.sheep.sheet.SheetReader;
 
 public class Operation extends Operand {
     private final Function function;
@@ -96,7 +96,7 @@ public class Operation extends Operand {
     }
 
     @Override
-    public Literal calculate(Sheet sheet) throws CalculationError {
+    public Literal calculate(SheetReader sheet) throws CalculationError {
         return function.calculate(sheet, parameters);
     }
 }

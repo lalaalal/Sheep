@@ -51,9 +51,8 @@ public class Expression {
     }
 
     private static Operand getOperandFromQueue(Queue<Component> queue) {
-        // TODO: 10/27/23 handle exception
         if (queue.isEmpty())
-            throw new IllegalArgumentException();
+            return new Literal("");
         Component component = queue.poll();
         int requiredArguments = component.requiredArguments();
         if (requiredArguments <= 0)

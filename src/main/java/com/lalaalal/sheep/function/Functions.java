@@ -1,7 +1,7 @@
 package com.lalaalal.sheep.function;
 
 import com.lalaalal.sheep.expression.*;
-import com.lalaalal.sheep.sheet.Sheet;
+import com.lalaalal.sheep.sheet.SheetReader;
 
 import java.util.HashMap;
 
@@ -16,7 +16,7 @@ public class Functions {
         return registry.get(name);
     }
 
-    public static double calculate(String name, Sheet sheet, Operand[] parameters) {
+    public static double calculate(String name, SheetReader sheet, Operand[] parameters) {
         return get(name).calculate(sheet, parameters).toDouble();
     }
 

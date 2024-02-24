@@ -3,7 +3,7 @@ package com.lalaalal.sheep.expression;
 import com.lalaalal.sheep.exception.CalculationError;
 import com.lalaalal.sheep.sheet.Cell;
 import com.lalaalal.sheep.sheet.Position;
-import com.lalaalal.sheep.sheet.Sheet;
+import com.lalaalal.sheep.sheet.SheetReader;
 
 public class CellReference extends Operand {
     private final Position position;
@@ -36,7 +36,7 @@ public class CellReference extends Operand {
     }
 
     @Override
-    public Literal calculate(Sheet sheet) throws CalculationError {
+    public Literal calculate(SheetReader sheet) throws CalculationError {
         Cell cell = sheet.getCell(position);
 
         return cell.calculate(sheet);

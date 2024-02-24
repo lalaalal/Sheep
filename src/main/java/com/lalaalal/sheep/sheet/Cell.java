@@ -25,7 +25,7 @@ public class Cell {
         return text;
     }
 
-    public Literal calculate(Sheet sheet) {
+    public Literal calculate(SheetReader sheet) {
         if (!isExpression())
             return new Literal(text);
         try {

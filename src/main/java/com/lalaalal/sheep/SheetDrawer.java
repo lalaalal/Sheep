@@ -4,7 +4,7 @@ import com.lalaalal.sheep.expression.CellRange;
 import com.lalaalal.sheep.expression.Literal;
 import com.lalaalal.sheep.sheet.Cell;
 import com.lalaalal.sheep.sheet.Position;
-import com.lalaalal.sheep.sheet.Sheet;
+import com.lalaalal.sheep.sheet.SheetReader;
 
 import java.io.PrintStream;
 
@@ -27,7 +27,7 @@ public class SheetDrawer {
         this.verticalLetter = verticalLetter;
     }
 
-    public void draw(PrintStream printStream, Sheet sheet, CellRange cellRange) {
+    public void draw(PrintStream printStream, SheetReader sheet, CellRange cellRange) {
         int maxRow = cellRange.getMaximumRow();
         int minRow = cellRange.getMinimumRow();
         int numRows = maxRow - cellRange.getMinimumRow() + 1;
@@ -49,7 +49,7 @@ public class SheetDrawer {
 
     }
 
-    private void drawCellRow(PrintStream printStream, Sheet sheet, int rowNumberWidth, int rowIndex, int numColumns, int minColumn) {
+    private void drawCellRow(PrintStream printStream, SheetReader sheet, int rowNumberWidth, int rowIndex, int numColumns, int minColumn) {
         printStream.print(verticalLetter);
         String format = String.format("%%%dd", rowNumberWidth);
         String rowNumber = String.format(format, rowIndex + 1);
@@ -70,7 +70,7 @@ public class SheetDrawer {
         printStream.println();
     }
 
-    private void drawColumnAlphabets(PrintStream printStream, Sheet sheet, int rowNumberWidth, int numColumns, int minColumn) {
+    private void drawColumnAlphabets(PrintStream printStream, SheetReader sheet, int rowNumberWidth, int numColumns, int minColumn) {
         printStream.print(verticalLetter);
         printStream.print(" ".repeat(rowNumberWidth));
         printStream.print(verticalLetter);
@@ -87,7 +87,7 @@ public class SheetDrawer {
         printStream.println();
     }
 
-    private void drawLine(PrintStream printStream, Sheet sheet, int rowNumberWidth, int numColumns, int minColumn) {
+    private void drawLine(PrintStream printStream, SheetReader sheet, int rowNumberWidth, int numColumns, int minColumn) {
         printStream.print(cornerLetter);
         for (int i = 0; i < rowNumberWidth; i++)
             printStream.print(horizontalLetter);
@@ -102,7 +102,7 @@ public class SheetDrawer {
         printStream.println();
     }
 
-    public void printDetail(PrintStream printStream, Sheet sheet, String position) {
+    public void printDetail(PrintStream printStream, SheetReader sheet, String position) {
         Cell cell = sheet.getCell(Position.at(position));
         printStream.println(position + ": text: " + cell.getText());
         if (cell.isExpression()) {

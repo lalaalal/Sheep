@@ -3,7 +3,7 @@ package com.lalaalal.sheep.function;
 import com.lalaalal.sheep.exception.CalculationError;
 import com.lalaalal.sheep.expression.Literal;
 import com.lalaalal.sheep.expression.Operand;
-import com.lalaalal.sheep.sheet.Sheet;
+import com.lalaalal.sheep.sheet.SheetReader;
 
 public class OperationFunction implements Function {
     private final Calculation calculation;
@@ -13,7 +13,7 @@ public class OperationFunction implements Function {
     }
 
     @Override
-    public Literal calculate(Sheet sheet, Operand... parameters) throws CalculationError {
+    public Literal calculate(SheetReader sheet, Operand... parameters) throws CalculationError {
         double a = parameters[0].calculate(sheet).toDouble();
         double b = parameters[1].calculate(sheet).toDouble();
 
